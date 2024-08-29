@@ -28,6 +28,8 @@ public class InterviewApplication {
 	public NewTopic topic() { //TODO: Adjust topic configuration like partition and replica
 		return TopicBuilder
 				.name(topicName)
+				.replicas(3)
+				.partitions(2)
 				.build();
 	}
 
@@ -36,7 +38,7 @@ public class InterviewApplication {
 		return args -> {
 			int count = messageCount;
 			for (int i = 0; i < count; i++)  //we have only 2 users
-				template.send(topicName, new Message("user"+(i%2), "just a message!"));
+				template.send(topicName, (i%2), String.valueOf(i), new Message("user"+(i%2), "just a message!"));
 		};
 	}
 
